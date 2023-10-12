@@ -1,4 +1,5 @@
-let square = [];
+let squares = [];
+let isWhiteTurn = true;
 const boardSquares = document.getElementsByClassName("square");
 const pieces = document.getElementsByName("name");
 const piecesImg = document.getElementsByTagName("img");
@@ -28,4 +29,33 @@ function setUpPieces(){
     for(let i = 0; i < piecesImg.length; i++){
         pieces[i].setAttribute("draggable", false);
     }
+}
+
+function allowDrop(event){
+    event.preventDefault();
+}
+
+function drag(event){
+    const piece = event.target;
+    const pieceColor = piece.getAttribute("color");
+
+    if((isWhiteTurn && pieceColor == "white") || (!isWhiteTurn && pieceColor == "black")){
+        event.dataTransfer.setData("text", piece.id);
+    }
+}
+
+function drop(event){
+    event.preventDefault();
+    let data = event.dataTransfer.getData("text");
+    const piece = document.getElementById(data);
+    const destinationSquare = event.currentTarget;
+    let destinationSquareID = destinationSquare.id;
+    destinationSquare.appendChild(piece);
+    isWhiteTurn = !isWhiteTurn;
+}
+
+//5.05
+
+function isSquareOccupied(){
+
 }

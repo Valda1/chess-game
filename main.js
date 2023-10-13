@@ -41,6 +41,8 @@ function drag(event){
 
     if((isWhiteTurn && pieceColor == "white") || (!isWhiteTurn && pieceColor == "black")){
         event.dataTransfer.setData("text", piece.id);
+        const startingSquareID = piece.parentNode.id;
+        getPossibleMoves(startingSquareID, piece);
     }
 }
 
@@ -50,12 +52,28 @@ function drop(event){
     const piece = document.getElementById(data);
     const destinationSquare = event.currentTarget;
     let destinationSquareID = destinationSquare.id;
-    destinationSquare.appendChild(piece);
-    isWhiteTurn = !isWhiteTurn;
+    if(isSquareOccupied(destinationSquare) == "blank"){
+        destinationSquare.appendChild(piece);
+        isWhiteTurn = !isWhiteTurn;
+        return;
+    }
+
+    if(isSquareOccupied(destinationSquare) !== "blank"){
+        while(destinationSquare.firstChild){
+            destinationSquare.removeChild(destinationSquare.firstChild);
+        }
+        destinationSquare.appendChild(piece);
+        isWhiteTurn = !isWhiteTurn;
+        return;
+    }
+    
 }
 
-//5.05
-
-function isSquareOccupied(){
-
+function isSquareOccupied(square){
+    if(square.querySelector(".piece")){
+        const color = square.querySelector(".piece").getAttribute("color");
+        return color;
+    }else{
+        return "blank";
+    }
 }

@@ -46,6 +46,8 @@ function drag(event){
     }
 }
 
+//6:57
+
 function drop(event){
     event.preventDefault();
     let data = event.dataTransfer.getData("text");

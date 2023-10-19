@@ -5,6 +5,7 @@ let context;
 
 let playerHeight = 10;
 let playerWidth = 80;
+//let playerWidth = 500; //for testing
 let playerVelocityX = 10;
 
 let player = {
@@ -18,7 +19,9 @@ let player = {
 let ballWidth = 10;
 let ballHeight = 10;
 let ballVelocityX = 3;
+//let ballVelocityX = 15; //for testing
 let ballVelocityY = 2;
+//let ballVelocityY = 10; //for testing
 
 let ball = {
     x: boardWidth / 2,
@@ -117,6 +120,14 @@ function update(){
             context.fillRect(block.x, block.y, block.width, block.height);
         }
     }
+
+    //next level
+    if(blockCount == 0){
+        score += 100 * blockRows * blockColumns; //bonus points for clearing a level
+        blockRows = Math.min(blockRows + 1, blockMaxRows);
+        createBlocks();
+    }
+
     //score
     context.font = "20px sans-serif";
     context.fillText(score, 10, 25);
@@ -209,6 +220,7 @@ function resetGame(){
     }
 
     blockArray = [];
+    blockRows = 3;
     score = 0;
     createBlocks();
 }

@@ -29,6 +29,18 @@ let ball = {
     velocityY: ballVelocityY
 }
 
+let blockArray = [];
+let blockWidth = 50;
+let blockHeight = 10;
+let blockColumns = 8;
+let blockRows = 3;
+let blockMaxRows = 10;
+let blockCount = 0;
+
+//starting block corners
+let blockX = 15;
+let blockY = 45;
+
 window.onload = function(){
     board = document.getElementById("board");
     board.height = boardHeight;
@@ -41,6 +53,8 @@ window.onload = function(){
 
     requestAnimationFrame(update);
     document.addEventListener("keydown", movePlayer);
+
+    createBlocks();
 }
 
 function update(){
@@ -73,6 +87,15 @@ function update(){
         ball.velocityY *= -1; //flip y direction up or down
     }else if(leftCollision(ball, player) || rightCollision(ball, player)){
         ball.velocityX *= -1; //flip x direction up or down
+    }
+
+    //blocks
+    context.fillStyle = "skyblue";
+    for(let i = 0; i < blockArray.length; i++){
+        let block = blockArray[i];
+        if(!block.break){
+            context.fillRect(block.x, block.y, block.width, block.height);
+        }
     }
 }
 
@@ -117,6 +140,23 @@ function leftCollision(ball, block){ // a is left of b (ball is left of block)
 
 function rightCollision(ball, block){ // a is right of b (ball is right of block)
     return detectColision(ball, block) && (block.x + block.width) >= ball.x;
+}
+
+function createBlocks(){
+    blockArray = [];
+    for(let c = 0; c <blockColumns; c++){
+        for(let r = 0; r < blockRows; r++){
+            let block = {
+                x: blockX + c * blockWidth + c * 10, // c*10 spaces 10px apart columns
+                y: blockY + r * blockHeight + r * 10, //r*10 spaces 10px apart rows
+                width: blockWidth,
+                height: blockHeight,
+                break: false
+            }
+            blockArray.push(block);
+        }
+    }
+    blockCount = blockArray.length;
 }
 
 
